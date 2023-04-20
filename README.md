@@ -7,31 +7,15 @@
 
     <tr>
         <td>Hadoop</td>
-        <td>2.2.7</td>
+        <td>3.3.0</td>
     </tr>
     <tr>
         <td>Java</td>
         <td>1.8</td>
     </tr>
     <tr>
-        <td>Docker</td>
-        <td>20.10.5</td>
-    </tr>
-    <tr>
         <td>Spark</td>
-        <td>3.0.3</td>
-    </tr>
-    <tr>
-        <td>Hive</td>
-        <td>2.3.9</td>
-    </tr>
-      <tr>
-        <td>Pig</td>
-        <td>0.17.0</td>
-    </tr>
-    <tr>
-        <td>Sqoop</td>
-        <td>1.4.7</td>
+        <td>3.3.3</td>
     </tr>
    </table>
 
