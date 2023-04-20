@@ -1,0 +1,64 @@
+version: "3.5"
+services:
+  worker1:
+    build:
+      context: .
+      shm_size: '2gb'
+    container_name: worker1
+    networks:
+      default:
+         ipv4_address: 172.12.0.3
+    extra_hosts:
+      - "master: 172.12.0.2"
+    command: bash -c  "
+        /usr/sbin/sshd
+        && /opt/spark/sbin/start-worker.sh spark://master:7077
+        && tail -f /dev/null"
+    hostname: worker1
+    restart: always
+    volumes:
+       - myhadoop:/worker1
+
+  master:
+    build:
+      context: .
+      shm_size: '2gb'
+      args: 
+           FORMAT_NAMENODE_COMMAND: hdfs namenode -format
+    container_name: master
+    networks:
+      default:
+         ipv4_address: 172.12.0.2
+    extra_hosts:
+      - "worker1: 172.12.0.3"
+    command: bash -c  "
+        /usr/sbin/sshd
+        && /opt/spark/sbin/start-master.sh
+        && start-dfs.sh
+        && start-yarn.sh
+        && tail -f /dev/null"
+    ports:
+      - 9870:9870 #hdfs
+      - 8088:8088 #yarn
+      - 8080:8080 #spark
+      # - 10000:10000 #hiveserer2
+      # - 10002:10002 #hiveUI
+      # - 8070:8070
+      # - 8060:8060
+      # - 7080:7080
+      # - 7070:7070
+      # - 8780:8780
+      # - 8793:8793
+      - 4040:4040 #spark-UI master
+    hostname: master
+    restart: always
+    volumes: 
+       - myhadoop:/master
+volumes:
+  myhadoop:
+    external: true
+networks:
+  default:
+    name: hadoop-network
+    external: true
+
